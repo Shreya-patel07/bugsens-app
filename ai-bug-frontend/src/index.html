@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Bug Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/motion@latest/dist/motion.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Modern Scrollbar Layout Styling */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1e1e2e; }
+        ::-webkit-scrollbar-thumb { background: #313244; border-radius: 4px; }
+        
+        /* Rendered Code Block Layout Adjustments */
+        pre { background-color: #11111b; padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0; overflow-x: auto; border: 1px solid #313244; font-family: monospace; }
+        code { font-family: monospace; color: #f38ba8; background-color: #1e1e2e; padding: 0.2rem 0.4rem; border-radius: 0.25rem; }
+        pre code { color: #cdd6f4; background-color: transparent; padding: 0; }
+    </style>
+</head>
+<body class="bg-[#11111b] text-[#cdd6f4] h-screen flex flex-col font-sans">
+
+    <header class="bg-[#181825] border-b border-[#313244] px-6 py-4 flex items-center justify-between shadow-md">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-bug-slash text-2xl text-[#f38ba8]"></i>
+            <h1 class="text-xl font-bold tracking-wide text-[#f5e0dc]">AI Bug Tracker</h1>
+        </div>
+        <div class="text-sm bg-[#313244] px-3 py-1.5 rounded-full text-[#a6adc8] flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Service Pipeline Connected
+        </div>
+    </header>
+
+    <main class="flex-1 flex overflow-hidden">
+        
+        <section class="w-1/2 p-6 flex flex-col gap-4 border-r border-[#313244] bg-[#1e1e2e]">
+            <div class="flex items-center justify-between">
+                <label for="code-input" class="text-sm font-semibold tracking-wider uppercase text-[#a6adc8]">
+                    <i class="fa-solid fa-code text-[#89b4fa] mr-1"></i> Java Source Code Input
+                </label>
+                <span class="text-xs text-[#6c7086]">Paste your raw program block</span>
+            </div>
+            
+            <textarea 
+                id="code-input" 
+                class="flex-1 w-full p-4 bg-[#11111b] text-[#cdd6f4] border border-[#313244] rounded-xl focus:outline-none focus:border-[#89b4fa] transition-all font-mono text-sm resize-none shadow-inner leading-relaxed"
+                placeholder="public class demo {&#10;    public static void main() {&#10;        a = 10;&#10;    }&#10;}"
+            ></textarea>
+
+            <button 
+                id="analyze-btn"
+                class="w-full bg-[#89b4fa] hover:bg-[#b4befe] text-[#11111b] font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 tracking-wide cursor-pointer"
+            >
+                <i id="btn-icon" class="fa-solid fa-wand-magic-sparkles"></i>
+                <span id="btn-text">Analyze Code</span>
+            </button>
+        </section>
+
+        <section class="w-1/2 flex flex-col bg-[#181825]">
+            <div class="px-6 py-4 border-b border-[#313244] flex items-center gap-2 bg-[#1e1e2e]">
+                <i class="fa-solid fa-robot text-[#a6e3a1]"></i>
+                <h2 class="text-sm font-semibold tracking-wider uppercase text-[#a6adc8]">AI Analysis Response Pipeline</h2>
+            </div>
+
+            <div id="output-container" class="flex-1 overflow-y-auto p-6">
+                <div id="placeholder" class="h-full flex flex-col items-center justify-center text-center opacity-40">
+                    <i class="fa-solid fa-terminal text-5xl mb-3 text-[#6c7086]"></i>
+                    <p class="text-sm">Submit your Java application source to activate the debugger system diagnostics.</p>
+                </div>
+                
+                <div id="ai-response-box" class="hidden style='opacity: 0; transform: translateY(20px);'">
+                    <div class="bg-[#1e1e2e] border border-[#313244] rounded-2xl p-6 shadow-md leading-relaxed space-y-4 text-[#cdd6f4]">
+                        <div id="analysis-content"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Destructure the animate function from the global Motion object
+        const { animate } = Motion;
+
+        document.getElementById('analyze-btn').addEventListener('click', async () => {
+            const codeInput = document.getElementById('code-input').value.trim();
+            const btnText = document.getElementById('btn-text');
+            const btnIcon = document.getElementById('btn-icon');
+            const analyzeBtn = document.getElementById('analyze-btn');
+            
+            const placeholder = document.getElementById('placeholder');
+            const responseBox = document.getElementById('ai-response-box');
+            const contentDiv = document.getElementById('analysis-content');
+
+            if (!codeInput) {
+                alert("Please add some code before calling engine diagnostics.");
+                return;
+            }
+
+            // Set Button Component Loading UI States
+            btnText.innerText = "Analyzing Program Architecture...";
+            btnIcon.className = "fa-solid fa-spinner animate-spin text-[#11111b]";
+            analyzeBtn.disabled = true;
+            analyzeBtn.style.opacity = "0.7";
+
+            try {
+                // Post network operation directly routing to your Spring Boot Server App Port Mapping
+                const response = await fetch('http://localhost:8080/api/ai/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ code: codeInput })
+                });
+
+                if (!response.ok) throw new Error("Backend system failed to reply to service payload routing.");
+
+                const data = await response.json();
+                
+                // Unhide the response box block container
+                placeholder.classList.add('hidden');
+                responseBox.classList.remove('hidden');
+
+                // Render markdown content to string HTML fields
+                contentDiv.innerHTML = marked.parse(data.result);
+
+                // --- 🌟 MOTION ANIMATION RIG 🌟 ---
+                // Smoothly slide the panel upward with real elastic spring physics!
+                animate(responseBox, 
+                    { 
+                        opacity: [0, 1], 
+                        y: [30, 0] 
+                    }, 
+                    { 
+                        duration: 0.6, 
+                        type: "spring", 
+                        stiffness: 90, 
+                        damping: 14 
+                    }
+                );
+
+            } catch (error) {
+                console.error(error);
+                placeholder.classList.add('hidden');
+                responseBox.classList.remove('hidden');
+                contentDiv.innerHTML = `<p class="text-[#f38ba8] font-semibold"><i class="fa-solid fa-circle-exclamation mr-1"></i> Connection Pipeline Failed: ${error.message}</p>`;
+                
+                // Animate error container onto screen smoothly as well
+                animate(responseBox, { opacity: [0, 1], y: [15, 0] }, { duration: 0.3 });
+            } finally {
+                // Return button elements back to base operational statuses
+                btnText.innerText = "Analyze Code";
+                btnIcon.className = "fa-solid fa-wand-magic-sparkles";
+                analyzeBtn.disabled = false;
+                analyzeBtn.style.opacity = "1";
+            }
+        });
+    </script>
+</body>
+</html>
