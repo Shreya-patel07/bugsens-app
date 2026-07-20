@@ -263,7 +263,7 @@ const [attachedFileName, setAttachedFileName] = useState('');
       const headers = { 'Content-Type': 'application/json' };
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
-      const response = await fetch('http://localhost:8080/api/ai/analyze', {
+      const response = await fetch('http://65.0.124.92:8080/api/ai/analyze', {
         method: 'POST',
         headers: headers,
         credentials: 'include', // CRITICAL FIX: Tells Spring Security you are signed in!
@@ -358,7 +358,7 @@ const [attachedFileName, setAttachedFileName] = useState('');
         const headers = {};
         if (token) headers['Authorization'] = `Bearer ${token}`;
 
-        const response = await fetch('http://localhost:8080/api/ai/analyze-image', {
+        const response = await fetch('http://65.0.124.92:8080/api/ai/analyze-image', {
           method: 'POST',
           headers: headers,
           credentials: 'include', // 👈 CRITICAL: Keeps your image uploads authenticated!

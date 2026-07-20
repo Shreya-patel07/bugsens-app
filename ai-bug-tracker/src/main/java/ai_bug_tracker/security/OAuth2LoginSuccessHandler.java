@@ -54,7 +54,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         String jwtToken = jwtUtil.generateToken(user.getEmail());
 
-        String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/")
+        String targetUrl = UriComponentsBuilder.fromUriString("http://65.0.124.92:3000/")
                 .queryParam("token", jwtToken)
                 .queryParam("email", user.getEmail())
                 .build().toUriString();
