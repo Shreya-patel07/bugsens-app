@@ -10,15 +10,23 @@ services:
     rootDir: ai-bug-tracker
     plan: free
     envVars:
-      - key: SPRING_DATASOURCE_URL
+      - key: DB_HOST
         fromDatabase:
           name: ai-bug-tracker-db
-          property: connectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: ai-bug-tracker-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: ai-bug-tracker-db
+          property: database
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: ai-bug-tracker-db
           property: user
-      - key: DB_PASSWORD
+      - key: SPRING_DATASOURCE_PASSWORD
         fromDatabase:
           name: ai-bug-tracker-db
           property: password
