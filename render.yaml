@@ -1,0 +1,40 @@
+databases:
+  - name: ai-bug-tracker-db
+    databaseName: aibugtracker
+    user: postgres
+    plan: free
+
+services:
+  - type: web
+    name: ai-bug-tracker-api
+    env: docker
+    rootDir: ai-bug-tracker
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: ai-bug-tracker-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: ai-bug-tracker-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: ai-bug-tracker-db
+          property: password
+      # You need to fill these securely in the Render dashboard:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_APP_PASSWORD
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
