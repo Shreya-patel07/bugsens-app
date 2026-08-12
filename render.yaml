@@ -1,7 +1,6 @@
 databases:
   - name: ai-bug-tracker-db
     databaseName: aibugtracker
-    user: postgres
     plan: free
 
 services:
