@@ -25,17 +25,15 @@ public class UserService {
     }
 
     public String login(String email, String password){
-
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user == null) {
+            return "fail";
+        }
 
         if(passwordEncoder.matches(password, user.getPassword())){
-
             return "Login Successful";
-
         } else {
-
-            throw new RuntimeException("Invalid Password");
+            return "fail";
         }
     }
 }
