@@ -23,7 +23,7 @@ import java.util.Random;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = {"http://localhost:3000", "http://65.0.124.92:3000"})
+@CrossOrigin(origins = {"http://localhost:3000", "https://bugsens-app.vercel.app"})
 public class AuthController {
 
     @Autowired

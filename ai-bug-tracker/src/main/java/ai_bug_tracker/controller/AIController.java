@@ -11,7 +11,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/ai")
 //@CrossOrigin(origins = "http://localhost:3000") // Allow your React app to connect
-@CrossOrigin("*")
+@CrossOrigin(origins = {"http://localhost:3000", "https://bugsens-app.vercel.app"})
 public class AIController {
 
     @Autowired
