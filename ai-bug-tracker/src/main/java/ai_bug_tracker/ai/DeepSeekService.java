@@ -66,7 +66,7 @@ public class DeepSeekService {
             }
 
             Map response = webClient.post()
-                    .uri("/v1beta/models/gemini-1.5-flash:generateContent?key=" + geminiApiKey)
+                    .uri(java.net.URI.create("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + geminiApiKey))
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(requestBody)
                     .retrieve()
