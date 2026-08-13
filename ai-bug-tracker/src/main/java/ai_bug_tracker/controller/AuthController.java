@@ -77,7 +77,6 @@ public class AuthController {
         Map<String, String> successResponse = new HashMap<>();
         successResponse.put("status", "OTP_SENT");
         successResponse.put("message", "Please check your channel and enter the 6 digit confirmation sequence.");
-        successResponse.put("dev_otp", generatedOtp); // Display on screen if email is broken
         return ResponseEntity.ok(successResponse);
     }
 
@@ -140,7 +139,6 @@ public class AuthController {
 
             response.put("status", "OTP_SENT");
             response.put("message", "A new confirmation sequence has been dispatched.");
-            response.put("dev_otp", generatedOtp);
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
