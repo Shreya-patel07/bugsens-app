@@ -1,25 +1,29 @@
 package ai_bug_tracker.ai;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class DeepSeekService {
 
+    @Value("${gemini.api.key}")
+    private String geminiApiKey;
+
     private final WebClient webClient;
 
     public DeepSeekService() {
         this.webClient = WebClient.builder()
-                .baseUrl("http://localhost:11434")
+                .baseUrl("https://generativelanguage.googleapis.com")
                 .build();
     }
 
     public String analyzeCode(String code) {
-
         String systemRules = """
                 You are an expert AI Code Analyzer. Your job is to inspect the user's submitted program for syntax errors, logical bugs, or compilation issues.
 
@@ -45,40 +49,48 @@ public class DeepSeekService {
                 Briefly explain why the code is correct or suggest minor best-practice optimizations if applicable.
                 """;
 
-        // Combine the custom instructions and user code cleanly into a single prompt for Ollama
-        String finalOllamaPrompt = systemRules + "\n\nAnalyze this code:\n" + code;
+        String finalPrompt = systemRules + "\n\nAnalyze this code:\n" + code;
 
-        // 1. Using a dynamic HashMap for the options to ensure clean JSON serialization
-        Map<String, Object> options = new HashMap<>();
-        options.put("temperature", 0.0);
+        Map<String, Object> part = new HashMap<>();
+        part.put("text", finalPrompt);
 
-        // 2. Build the main request body matching native Ollama specifications
+        Map<String, Object> content = new HashMap<>();
+        content.put("parts", List.of(part));
+
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("model", "deepseek-coder:latest"); // Standardizing to the latest build tag
-        requestBody.put("prompt", finalOllamaPrompt);       // Combined instruction set goes here
-        requestBody.put("stream", false);
-        requestBody.put("options", options);
+        requestBody.put("contents", List.of(content));
 
         try {
-            // 3. Post to the native generation endpoint
+            if (geminiApiKey == null || geminiApiKey.trim().isEmpty()) {
+                return "AI Error : Gemini API key is missing. Please configure GEMINI_API_KEY in Render environment variables.";
+            }
+
             Map response = webClient.post()
-                    .uri("/api/generate")
+                    .uri("/v1beta/models/gemini-1.5-flash:generateContent?key=" + geminiApiKey)
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(requestBody)
                     .retrieve()
                     .bodyToMono(Map.class)
                     .block();
 
-            // 4. Safely check and extract the response
-            if (response != null && response.get("response") != null) {
-                return response.get("response").toString();
+            if (response != null && response.containsKey("candidates")) {
+                List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.get("candidates");
+                if (!candidates.isEmpty()) {
+                    Map<String, Object> candidateContent = (Map<String, Object>) candidates.get(0).get("content");
+                    if (candidateContent != null && candidateContent.containsKey("parts")) {
+                        List<Map<String, Object>> parts = (List<Map<String, Object>>) candidateContent.get("parts");
+                        if (!parts.isEmpty()) {
+                            return parts.get(0).get("text").toString();
+                        }
+                    }
+                }
             }
 
-            return "Local AI Error: Ollama processed the request but returned an empty response field.";
+            return "AI Error: AI processed the request but returned an empty response field.";
 
         } catch (Exception e) {
             e.printStackTrace();
-            return "Local AI Error : " + e.getMessage();
+            return "AI Connection Error : " + e.getMessage();
         }
     }
 }
