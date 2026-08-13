@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const API_BASE = "http://65.0.124.92:8080/api/auth";
+const API_BASE = "https://ai-bug-tracker-api-1xtn.onrender.com/api/auth";
 
 export default function AuthScreen({ onLoginSuccess, onGuestAccess }) {
   const [mode, setMode] = useState("signin"); // 'signin' | 'signup'
@@ -343,7 +343,7 @@ export default function AuthScreen({ onLoginSuccess, onGuestAccess }) {
 <motion.div variants={elementSlideUp} className="grid grid-cols-2 gap-4">
   <SocialBtn 
     label="Google"
-    onClick={() => window.location.href = "http://65.0.124.92:8080/oauth2/authorization/google"}
+    onClick={() => window.location.href = "https://ai-bug-tracker-api-1xtn.onrender.com/oauth2/authorization/google"}
   >
     <GoogleIcon />
     
@@ -351,7 +351,7 @@ export default function AuthScreen({ onLoginSuccess, onGuestAccess }) {
 
   <SocialBtn  
     label="GitHub"
-    onClick={() => window.location.href = "http://65.0.124.92:8080/oauth2/authorization/github"}
+    onClick={() => window.location.href = "https://ai-bug-tracker-api-1xtn.onrender.com/oauth2/authorization/github"}
   >
     <GithubIcon />
     

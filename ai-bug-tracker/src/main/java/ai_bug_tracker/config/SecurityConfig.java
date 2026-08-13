@@ -54,7 +54,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // Explicitly allow your React frontend port
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://65.0.124.92:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://bugsens-app.vercel.app"));
 
         // Allow all standard web methods
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));

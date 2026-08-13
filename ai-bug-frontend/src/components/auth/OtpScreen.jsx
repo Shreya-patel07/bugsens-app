@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const API_BASE = "http://65.0.124.92:8080/api/auth";
+const API_BASE = "https://ai-bug-tracker-api-1xtn.onrender.com/api/auth";
 const OTP_LEN = 6;
 const RESEND_SECONDS = 59;
 
