@@ -264,7 +264,7 @@ const [attachedFileName, setAttachedFileName] = useState('');
       const headers = { 'Content-Type': 'application/json' };
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
-      const response = await fetch('https://ai-bug-tracker-api-1xtn.onrender.com/api/ai/analyze', {
+      const response = await fetch('https://ai-bug-tracker-api-lxtn.onrender.com/api/ai/analyze', {
         method: 'POST',
         headers: headers,
         credentials: 'include', // CRITICAL FIX: Tells Spring Security you are signed in!
@@ -359,7 +359,7 @@ const [attachedFileName, setAttachedFileName] = useState('');
         const headers = {};
         if (token) headers['Authorization'] = `Bearer ${token}`;
 
-        const response = await fetch('https://ai-bug-tracker-api-1xtn.onrender.com/api/ai/analyze-image', {
+        const response = await fetch('https://ai-bug-tracker-api-lxtn.onrender.com/api/ai/analyze-image', {
           method: 'POST',
           headers: headers,
           credentials: 'include', // 👈 CRITICAL: Keeps your image uploads authenticated!
