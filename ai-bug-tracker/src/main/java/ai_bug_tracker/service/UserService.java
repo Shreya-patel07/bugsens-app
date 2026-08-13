@@ -17,10 +17,11 @@ public class UserService {
             new BCryptPasswordEncoder();
 
     public User register(User user) {
-
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already in use");
+        }
         // Encrypt password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
         return userRepository.save(user);
     }
 
