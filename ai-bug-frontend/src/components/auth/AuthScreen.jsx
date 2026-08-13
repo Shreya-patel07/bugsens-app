@@ -77,7 +77,7 @@ export default function AuthScreen({ onLoginSuccess, onGuestAccess }) {
         switchMode("signin");
       } else {
         if (data.status === "OTP_SENT") {
-          onLoginSuccess?.({ email: email.trim(), status: "OTP_SENT" });
+          onLoginSuccess?.(email.trim());
         } else {
           setError("Unexpected response configuration from authentication gateway.");
         }
