@@ -154,6 +154,7 @@ export default function App() {
 
   // ── Code Analyzer Workbench States ──
   const [code, setCode] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [language, setLanguage] = useState('Java'); // 🟢 FIXED: Add missing language state
 
 const [attachedFileName, setAttachedFileName] = useState('');
