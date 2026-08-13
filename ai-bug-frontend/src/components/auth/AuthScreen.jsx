@@ -155,13 +155,13 @@ export default function AuthScreen({ onLoginSuccess, onGuestAccess }) {
       <div className="flex-1 flex items-center justify-center p-6 md:p-12 lg:p-16 z-10 relative">
         <motion.div 
           variants={glassCardVariants}
-          className="w-full max-w-lg bg-[#0a0a0c]/40 backdrop-blur-xl border border-white/[0.05] rounded-[32px] p-8 md:p-10 shadow-[0_24px_80px_-15px_rgba(0,0,0,0.8)] relative overflow-hidden group"
+          className="w-full max-w-lg bg-[#0a0a0c]/40 backdrop-blur-xl border border-white/[0.05] rounded-[32px] p-5 shadow-[0_24px_80px_-15px_rgba(0,0,0,0.8)] relative overflow-hidden group"
         >
           {/* Subtle Dynamic Border Glow Accent */}
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none bg-gradient-to-b from-white/[0.04] via-transparent to-transparent" />
 
           {/* Mini Top Branding for Compact Screens */}
-          <motion.div variants={elementSlideUp} className="lg:hidden flex items-center gap-3 mb-8">
+          <motion.div variants={elementSlideUp} className="lg:hidden flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#a3e635] to-[#76b01b] flex items-center justify-center shadow-[0_0_20px_rgba(163,230,53,0.3)]">
               <svg className="w-4 h-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -171,7 +171,7 @@ export default function AuthScreen({ onLoginSuccess, onGuestAccess }) {
           </motion.div>
 
           {/* Futuristic Floating Toggle Switch */}
-          <motion.div variants={elementSlideUp} className="relative mb-10 inline-flex p-1 rounded-2xl bg-[#141417]/80 border border-white/[0.05] shadow-inner">
+          <motion.div variants={elementSlideUp} className="relative mb-4 inline-flex p-1 rounded-2xl bg-[#141417]/80 border border-white/[0.05] shadow-inner">
             <button
               type="button"
               onClick={() => switchMode("signin")}
@@ -202,9 +202,9 @@ export default function AuthScreen({ onLoginSuccess, onGuestAccess }) {
               animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
               exit={{ opacity: 0, x: 15, filter: "blur(4px)" }}
               transition={{ duration: 0.25 }}
-              className="mb-8"
+              className="mb-4"
             >
-              <h1 className="text-3xl md:text-4xl font-bold tracking-tight leading-none bg-gradient-to-b from-white to-[#a1a1aa] bg-clip-text text-transparent">
+              <h1 className="text-2xl md:text-3xl font-bold tracking-tight leading-none bg-gradient-to-b from-white to-[#a1a1aa] bg-clip-text text-transparent">
                 {isSignup ? "Forge your account." : "Access core hub."}
               </h1>
               <p className="text-sm text-[#71717a] mt-3">
@@ -214,7 +214,7 @@ export default function AuthScreen({ onLoginSuccess, onGuestAccess }) {
           </AnimatePresence>
 
           {/* Form Stack inputs */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-2.5">
             <AnimatePresence initial={false}>
               {isSignup && (
                 <motion.div
@@ -317,7 +317,7 @@ export default function AuthScreen({ onLoginSuccess, onGuestAccess }) {
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="group relative w-full inline-flex items-center justify-center gap-2 px-5 py-4 rounded-xl bg-[#fafafa] hover:bg-white text-black text-sm font-bold tracking-tight disabled:bg-[#18181b] disabled:text-[#52525b] transition-all cursor-pointer shadow-[0_10px_35px_-10px_rgba(255,255,255,0.2)]"
+              className="group relative w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#fafafa] hover:bg-white text-black text-sm font-bold tracking-tight disabled:bg-[#18181b] disabled:text-[#52525b] transition-all cursor-pointer shadow-[0_10px_35px_-10px_rgba(255,255,255,0.2)]"
             >
               {loading ? (
                 <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -336,7 +336,7 @@ export default function AuthScreen({ onLoginSuccess, onGuestAccess }) {
           </form>
 
           {/* Separation Lines */}
-          <motion.div variants={elementSlideUp} className="flex items-center gap-4 my-8">
+          <motion.div variants={elementSlideUp} className="flex items-center gap-4 my-3">
             <div className="flex-1 h-px bg-white/[0.05]" />
             <span className="text-[10px] uppercase tracking-[0.25em] text-[#4b4b52] font-bold">Network Relays</span>
             <div className="flex-1 h-px bg-white/[0.05]" />
@@ -368,7 +368,7 @@ export default function AuthScreen({ onLoginSuccess, onGuestAccess }) {
               whileHover={{ x: 4, textShadow: "0 0 8px rgba(255,255,255,0.5)" }}
               type="button"
               onClick={onGuestAccess}
-              className="w-full mt-6 text-center text-xs font-semibold text-[#8a8a93] hover:text-white transition-all cursor-pointer block"
+              className="w-full mt-3 text-center text-xs font-semibold text-[#8a8a93] hover:text-white transition-all cursor-pointer block"
             >
               Examine Workspace as Guest ➔
             </motion.button>
@@ -382,7 +382,7 @@ export default function AuthScreen({ onLoginSuccess, onGuestAccess }) {
 /* ─────────── Reusable Field Component ─────────── */
 function Field({ icon, label, type, value, onChange, placeholder, trailing }) {
   return (
-    <div className="space-y-2 w-full text-left">
+    <div className="space-y-1.5 w-full text-left">
       <label className="text-[11px] font-bold uppercase tracking-wider text-[#71717a] ml-1">{label}</label>
       <div className="relative group">
         <div className="absolute inset-0 bg-white/[0.01] group-focus-within:bg-[#a3e635]/[0.02] border border-white/[0.06] group-focus-within:border-[#a3e635]/40 rounded-xl transition-all duration-300 pointer-events-none" />
@@ -392,7 +392,7 @@ function Field({ icon, label, type, value, onChange, placeholder, trailing }) {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="w-full bg-transparent pl-11 pr-11 py-3.5 text-sm text-white placeholder:text-[#3f3f46] outline-none relative z-10 font-mono"
+          className="w-full bg-transparent pl-11 pr-11 py-2 text-sm text-white placeholder:text-[#3f3f46] outline-none relative z-10 font-mono"
         />
         {trailing && <span className="absolute right-4 top-1/2 -translate-y-1/2 z-20">{trailing}</span>}
       </div>
@@ -407,7 +407,7 @@ function SocialBtn({ children, label, onClick }) { // 1. Added onClick here
       whileTap={{ scale: 0.97 }}
       type="button"
       onTap={onClick} // 2. Added onClick={onClick} here so the click event works!
-      className="inline-flex items-center justify-center gap-2.5 px-4 py-3.5 rounded-xl bg-white/[0.01] border border-white/[0.05] text-[#e4e4e7] text-xs font-bold font-mono transition-all cursor-pointer w-full"
+      className="inline-flex items-center justify-center gap-2.5 px-4 py-2 rounded-xl bg-white/[0.01] border border-white/[0.05] text-[#e4e4e7] text-xs font-bold font-mono transition-all cursor-pointer w-full"
     >
       {children}
       <span>{label}</span>
