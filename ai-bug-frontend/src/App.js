@@ -517,17 +517,6 @@ const [attachedFileName, setAttachedFileName] = useState('');
     return (
       <>
         <AuthScreen onLoginSuccess={handleLoginSuccess} onGuestAccess={handleGuestAccess} />
-        <button
-          onClick={() => {
-            setLoggedInEmail("preview@bugsens.dev");
-            setAuthStep(2);
-          }}
-          data-testid="preview-otp-btn"
-          className="fixed bottom-4 right-4 z-50 px-3 py-2 rounded-full bg-[#111114] border border-white/[0.08] text-[10px] font-mono text-[#a1a1aa] hover:text-white hover:border-[#a3e635]/40 transition-all"
-          title="Preview OTP screen without backend"
-        >
-          preview otp →
-        </button>
       </>
     );
   }
