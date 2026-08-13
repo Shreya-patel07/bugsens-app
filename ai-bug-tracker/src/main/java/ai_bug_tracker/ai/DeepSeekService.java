@@ -1,10 +1,13 @@
 package ai_bug_tracker.ai;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,14 +17,6 @@ public class DeepSeekService {
 
     @Value("${gemini.api.key}")
     private String geminiApiKey;
-
-    private final WebClient webClient;
-
-    public DeepSeekService() {
-        this.webClient = WebClient.builder()
-                .baseUrl("https://generativelanguage.googleapis.com")
-                .build();
-    }
 
     public String analyzeCode(String code) {
         String systemRules = """
@@ -65,13 +60,24 @@ public class DeepSeekService {
                 return "AI Error : Gemini API key is missing. Please configure GEMINI_API_KEY in Render environment variables.";
             }
 
-            Map response = webClient.post()
-                    .uri(java.net.URI.create("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + geminiApiKey))
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(requestBody)
-                    .retrieve()
-                    .bodyToMono(Map.class)
-                    .block();
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonBody = mapper.writeValueAsString(requestBody);
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + geminiApiKey))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+
+            HttpResponse<String> httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String responseBody = httpResponse.body();
+            
+            if (httpResponse.statusCode() != 200) {
+                 return "AI Error (" + httpResponse.statusCode() + "): " + responseBody;
+            }
+
+            Map response = mapper.readValue(responseBody, Map.class);
 
             if (response != null && response.containsKey("candidates")) {
                 List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.get("candidates");
