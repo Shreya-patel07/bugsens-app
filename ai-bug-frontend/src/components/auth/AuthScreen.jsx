@@ -77,7 +77,10 @@ export default function AuthScreen({ onLoginSuccess, onGuestAccess }) {
         switchMode("signin");
       } else {
         if (data.status === "OTP_SENT") {
-          onLoginSuccess?.(email.trim());
+          if (data.dev_otp) {
+            alert(`Your OTP Code is: ${data.dev_otp}\n\n(This is shown because your email password isn't set up yet on Render)`);
+          }
+          onLoginSuccess?.({ email: email.trim(), status: "OTP_SENT" });
         } else {
           setError("Unexpected response configuration from authentication gateway.");
         }
